@@ -9,14 +9,14 @@ const app = express();
 
 // Windows and Linux users: You should have retained the user/password from the pre-work for this course.
 // Your OS may require that your conString is composed of additional information including user and password.
-// const conString = 'postgres://USER:PASSWORD@HOST:PORT/DBNAME';
+const conString = 'postgres://postgres:plokij09@localhost:5432/postgres';
 // Mac:
 //const conString = 'postgres://localhost:5432';
 
 //Gregor: I'm a Mac. Richard: And I'm a PC. But we can use environment variables to work on both platforms.
-const conString = process.env.PGPATH;
+//const conString = process.env.PGPATH;
 
-const client = new pg.Client();
+const client = new pg.Client(conString);
 
 // REVIEW: Use the client object to connect to our DB.
 client.connect();
