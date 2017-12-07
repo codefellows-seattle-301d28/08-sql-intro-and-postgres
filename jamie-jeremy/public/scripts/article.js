@@ -42,17 +42,6 @@ Article.fetchAll = callback => {
 
 
 // REVIEWED: Take a few minutes and review what each of these new methods do in relation to our server and DB
-Article = callback => {
-  $.ajax({
-    url: '/articles',
-    method: 'DELETE',
-  })
-    .then(data => {
-      console.log(data);
-      if (callback) callback();
-    });
-};
-
 Article.prototype.insertRecord = function(callback) {
   $.post('/articles', {author: this.author, authorUrl: this.authorUrl, body: this.body, category: this.category, publishedOn: this.publishedOn, title: this.title})
     .then(data => {

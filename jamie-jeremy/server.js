@@ -1,8 +1,9 @@
 'use strict';
 
+const pg = require('pg');
 const fs = require('fs');
 const express = require('express');
-const pg= require('pg');
+
 
 const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3000;
@@ -10,12 +11,12 @@ const app = express();
 
 // Windows and Linux users: You should have retained the user/password from the pre-work for this course.
 // Your OS may require that your conString is composed of additional information including user and password.
-// const conString = 'postgres://USER:PASSWORD@HOST:PORT/DBNAME';
+const conString = 'postgres://postgres:Jp122790@localhost:5432/postgres';
 
 // Mac:
 // const conString = 'postgres://localhost:5432';
 
-const client = new pg.Client();
+const client = new pg.Client(conString);
 
 // REVIEWED: Use the client object to connect to our DB.
 client.connect();
@@ -34,7 +35,7 @@ app.get('/new', (request, response) => {
 });
 
 
-// REVIEW: Routes for making API calls to use CRUD Operations on our database
+// REVIEWED: Routes for making API calls to use CRUD Operations on our database
 app.get('/articles', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
   // We would use numbers 2 and 5 of the full-stack-diagram.png. Its interacting in the fetchAll method. The part of CRUD that is being enacted/managed in this code is Read.
@@ -144,7 +145,7 @@ function loadArticles() {
   // We would use numbers 1, 3 and 4 of the full-stack-diagram.png. It is not interacting with article.js at all because its being invoked in the server.js The part of CRUD that is being enacted/managed in this code is Create and Read.
   client.query('SELECT COUNT(*) FROM articles')
     .then(result => {
-    // REVIEW: result.rows is an array of objects that PostgreSQL returns as a response to a query.
+    // REVIEWED: result.rows is an array of objects that PostgreSQL returns as a response to a query.
     // If there is nothing on the table, then result.rows[0] will be undefined, which will make count undefined. parseInt(undefined) returns NaN. !NaN evaluates to true.
     // Therefore, if there is nothing on the table, line 158 will evaluate to true and enter into the code block.
       if(!parseInt(result.rows[0].count)) {
