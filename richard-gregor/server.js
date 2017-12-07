@@ -2,21 +2,21 @@
 
 const fs = require('fs');
 const express = require('express');
-
+const pg = require('pg');
 const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3000;
 const app = express();
 
 // Windows and Linux users: You should have retained the user/password from the pre-work for this course.
 // Your OS may require that your conString is composed of additional information including user and password.
-// const conString = 'postgres://USER:PASSWORD@HOST:PORT/DBNAME';
+const conString = 'postgres://postgres:plokij09@localhost:5432/postgres';
 // Mac:
 //const conString = 'postgres://localhost:5432';
 
 //Gregor: I'm a Mac. Richard: And I'm a PC. But we can use environment variables to work on both platforms.
-const conString = process.env.PGPATH;
+//const conString = process.env.PGPATH;
 
-const client = new pg.Client();
+const client = new pg.Client(conString);
 
 // REVIEW: Use the client object to connect to our DB.
 client.connect();
@@ -101,7 +101,7 @@ app.put('/articles/:id', (request, response) => {
 
 app.delete('/articles/:id', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // Steps 3 & 4 in diagram. articles.js method: deleteRecord. CRUD = delete.
   client.query(
     `DELETE FROM articles WHERE article_id=$1;`,
     [request.params.id]
@@ -116,7 +116,7 @@ app.delete('/articles/:id', (request, response) => {
 
 app.delete('/articles', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // Steps 3 & 4 in diagram. articles.js method: truncateTable. CRUD = delete.
   client.query(
     'DELETE FROM articles;'
   )
@@ -129,7 +129,7 @@ app.delete('/articles', (request, response) => {
 });
 
 // COMMENT: What is this function invocation doing?
-// PUT YOUR RESPONSE HERE
+// This calls our loadDB function below. It searches for the database table and creates one if none exist.
 loadDB();
 
 app.listen(PORT, () => {
@@ -141,7 +141,7 @@ app.listen(PORT, () => {
 ////////////////////////////////////////
 function loadArticles() {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // Steps 3 & 4 in diagram. article.js method: No part of article.js is calling this. It's called in server.js. CRUD = Read.
   client.query('SELECT COUNT(*) FROM articles')
     .then(result => {
     // REVIEW: result.rows is an array of objects that PostgreSQL returns as a response to a query.
@@ -165,7 +165,7 @@ function loadArticles() {
 
 function loadDB() {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // Steps 3 & 4 in diagram. No part of article.js is calling this. It's called in server.js. CRUD = delete.
   client.query(`
     CREATE TABLE IF NOT EXISTS articles (
       article_id SERIAL PRIMARY KEY,
