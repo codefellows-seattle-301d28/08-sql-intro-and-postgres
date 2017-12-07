@@ -1,7 +1,7 @@
 # Lab 8
 
 **Author**: Jeremy and Jamie
-**Version**: 1.0.0
+**Version**: 8.0.0
 
 ## Overview
 * As a user, I want to store my articles in a database so that my articles are available for users from an external source.
@@ -49,3 +49,6 @@
   └── server.js
 
 ## Change Log
+
+10:43 PM - Comments completed
+11:43 PM - Troubleshooting completed to get articles to show up and updated readme.
