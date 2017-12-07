@@ -115,7 +115,7 @@ app.delete('/articles/:id', (request, response) => {
 
 app.delete('/articles', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // This uses 2,3,4 and 5 in the full-stack. This is used by the Article.truncate table. This is using the delete method of CRUD. What this code does is deletes all of the table rows. It uses express and postgres. 
   client.query(
     'DELETE FROM articles;'
   )
@@ -128,7 +128,7 @@ app.delete('/articles', (request, response) => {
 });
 
 // COMMENT: What is this function invocation doing?
-// PUT YOUR RESPONSE HERE
+// This function will load a table if one does not already exist. Once this function runs for the first time it will not run again unless the entire table is deleted. 
 loadDB();
 
 app.listen(PORT, () => {
@@ -140,7 +140,7 @@ app.listen(PORT, () => {
 ////////////////////////////////////////
 function loadArticles() {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // This utilizes 3 and 4 because it only interacts between the server and the database, not the view. It does not interact with article.js, the only invocation of this function is in loadDB, which is located on server.js. This is a CREATE function because it is making the new rows in the table. It utilizes postgres and fs. What this code does is loads all of the articles in the table if the table is empty. 
   client.query('SELECT COUNT(*) FROM articles')
     .then(result => {
     // REVIEW: result.rows is an array of objects that PostgreSQL returns as a response to a query.
@@ -164,7 +164,7 @@ function loadArticles() {
 
 function loadDB() {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // This is a 3 and 4 path because its between the server and DB. This is not invoked on article.js, it is only utilized on server.js. This is a CREATE function because it is making a table for the first time, and then if the table is empty it will be creating all the new rows in the table. It is only using postgres.
   client.query(`
     CREATE TABLE IF NOT EXISTS articles (
       article_id SERIAL PRIMARY KEY,
