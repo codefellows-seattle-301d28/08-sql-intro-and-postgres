@@ -40,7 +40,7 @@ app.get('/articles', (request, response) => {
   // PUT YOUR RESPONSE HERE
   client.query('SELECT * FROM articles')
     .then(function(result) {
-      response.send(result.rows);
+      response.send(result.rows); //sends to the browser
     })
     .catch(function(err) {
       console.error(err)
@@ -49,7 +49,7 @@ app.get('/articles', (request, response) => {
 
 app.post('/articles', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // This is 3 of the diagram, and .then() is 5. 4 determines whether .then or .catch execution. The method in article.js is Article.prototype.insertRecord(). This is U update of CRUD.
   client.query(
     `INSERT INTO
     articles(title, author, "authorUrl", category, "publishedOn", body)
@@ -165,7 +165,7 @@ function loadArticles() {
 
 function loadDB() {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // Number 3. This is create part C of CRUD.
   client.query(`
     CREATE TABLE IF NOT EXISTS articles (
       article_id SERIAL PRIMARY KEY,
