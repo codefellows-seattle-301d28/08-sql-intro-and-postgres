@@ -7,11 +7,17 @@ const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3000;
 const app = express();
 
+// Windows and Linux users: You should have retained the user/password from the pre-work for this course.
+// Your OS may require that your conString is composed of additional information including user and password.
+// const conString = 'postgres://USER:PASSWORD@HOST:PORT/DBNAME';
+
+// Mac:
+// const conString = 'postgres://localhost:5432';
+
 const client = new pg.Client();
 
 // REVIEW: Use the client object to connect to our DB.
 client.connect();
-
 
 // REVIEW: Install the middleware plugins so that our app can use the body-parser module.
 app.use(bodyParser.json());
