@@ -102,9 +102,9 @@ articleView.create = () => {
   $('pre code').each(function(i, block) {
     hljs.highlightBlock(block);
   });
-
-  $('#export-field').show();
-  $('#article-json').val(`${JSON.stringify(article)},`);
+  // This code is involved in the "export" system and is now obsolete.
+  // $('#export-field').show();
+  // $('#article-json').val(`${JSON.stringify(article)},`
 };
 
 articleView.submit = event => {
