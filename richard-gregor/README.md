@@ -4,19 +4,22 @@
 **Version**: 1.0.0
 
 ## Overview
-<!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for a Code Fellows 301 class. (i.e. What's your problem domain?) -->
+We are now utilizing SQL to create databases. Our JavaScript querys the server for methods to GET, POST, PUT, and DELETE.
 
 ## Getting Started
-<!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
+npm install
+setup conString
+run nodemon
+run posgres
 
 ## Architecture
-<!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. -->
+HTML, CSS, JavaScript, SQL, and some node module dependencies.
 
 ## Change Log
-<!-- Use this are to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an examples:
+12-07-2017 10am - installed dependencies
+12-07-2017 11am - completed basic functionality
+12-07-2017 11:30am - postgres working on Mac and Windows
+12-07-2017 12pm - database connection working and all TODOs complete
 
-01-01-2001 4:59pm - Application now has a fully-functional express server, with GET and POST routes for the book resource.
-
-## Credits and Collaborations
-<!-- Give credit (and a link) to other people or resources that helped you build this application. -->
--->
+##Credits and Collaborations
+Richard and Gregor... shout out to TAs... All 3 of them.
