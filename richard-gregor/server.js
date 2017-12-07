@@ -10,10 +10,11 @@ const app = express();
 // Windows and Linux users: You should have retained the user/password from the pre-work for this course.
 // Your OS may require that your conString is composed of additional information including user and password.
 // const conString = 'postgres://USER:PASSWORD@HOST:PORT/DBNAME';
-const conString = 'postgres://USER:PASSWORD@HOST:PORT/DBNAME';
-const conString = 'postgres://localhost:5432';
 // Mac:
-// const conString = 'postgres://localhost:5432';
+//const conString = 'postgres://localhost:5432';
+
+//Gregor: I'm a Mac. Richard: And I'm a PC. But we can use environment variables to work on both platforms.
+const conString = process.env.PGPATH;
 
 const client = new pg.Client();
 
@@ -24,7 +25,6 @@ client.connect();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('./public'));
-
 
 // REVIEW: Routes for requesting HTML resources
 app.get('/new', (request, response) => {
@@ -37,7 +37,7 @@ app.get('/new', (request, response) => {
 // REVIEW: Routes for making API calls to use CRUD Operations on our database
 app.get('/articles', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // 3 Query and 4 Result. In article.js, it is interacting with the .fetchAll method. The part of CRUD that is being enacted is Read.
   client.query('SELECT * FROM articles')
     .then(function(result) {
       response.send(result.rows);
@@ -49,7 +49,7 @@ app.get('/articles', (request, response) => {
 
 app.post('/articles', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // 3 Querying and 4 Result. The code that is interacting with the .insertRecord method. And the part of CRUD this piece invokes is Create.
   client.query(
     `INSERT INTO
     articles(title, author, "authorUrl", category, "publishedOn", body)
@@ -74,7 +74,7 @@ app.post('/articles', (request, response) => {
 
 app.put('/articles/:id', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // 3 and 4. Interacting with the .updateRecord method. And we are updating our articles.
   client.query(
     `UPDATE articles
     SET
