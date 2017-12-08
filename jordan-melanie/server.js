@@ -1,5 +1,6 @@
 'use strict';
 
+const pg = require('pg');
 const fs = require('fs');
 const express = require('express');
 
@@ -14,7 +15,7 @@ const app = express();
 // Mac:
 const conString = 'postgres://localhost:5432';
 
-const client = new pg.Client();
+const client = new pg.Client(conString);
 
 // REVIEWED: Use the client object to connect to our DB.
 client.connect();
@@ -28,7 +29,7 @@ app.use(express.static('./public'));
 // REVIEW: Routes for requesting HTML resources
 app.get('/new', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // This line of code corresponds to steps 1 and 5 of the full-stack-diagram. new.html is stored on the server and is being sent to the client as a response. This interacts with .toHtml in article.js. This piece of code is connected to the R (read) of CRUD, as it is using the .get method to show the html page at a location.
+  // This line of code corresponds to steps 1 and 5 of the full-stack-diagram. new.html is stored on the server and is being sent to the client as a response. This does not interact with any part of article.js. This piece of code is connected to the R (read) of CRUD, as it is using the .get method to show the html page at a location.
   response.sendFile('new.html', {root: './public'});
 });
 
@@ -36,7 +37,7 @@ app.get('/new', (request, response) => {
 // REVIEW: Routes for making API calls to use CRUD Operations on our database
 app.get('/articles', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // This line of code corresponds to steps 3, 4, and 5 of the full-stack-diagram. It is sending a query to the model for all articles, and returning the resulting rows as a response. This interacts with the .fetchAll method in article.js. This piece of code is connected to the R (read) of CRUD, as it is sending the result directly as a response for the client to see.
+  // This line of code corresponds to step 5 of the full-stack-diagram. It is sending a query to the model for all articles, and returning the resulting rows as a response. This interacts with the .fetchAll method in article.js, as it uses results. This piece of code is connected to the R (read) of CRUD, as it is sending the result directly as a response for the client to see.
   client.query('SELECT * FROM articles')
     .then(function(result) {
       response.send(result.rows);
@@ -48,7 +49,7 @@ app.get('/articles', (request, response) => {
 
 app.post('/articles', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // This line corresponds to steps 2, 3, and 5 in the full-stack-diagram. This is interacting with the .updateRecord function in article.js. Update is being enacted by this piece of code.
+  // This line corresponds to step 3 in the full-stack-diagram. This is interacting with the .updateRecord function in article.js. Update is being enacted by this piece of code.
   client.query(
     `INSERT INTO
     articles(title, author, "authorUrl", category, "publishedOn", body)
@@ -73,7 +74,7 @@ app.post('/articles', (request, response) => {
 
 app.put('/articles/:id', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // This line corresponds to steps 2, 3, and 5 of the full-stack-diagram. This is interacting with the .updateRecord method in article.js. This is the update part of CRUD.
+  // This line corresponds to step 3 of the full-stack-diagram. This is interacting with the .updateRecord method in article.js. This is the update part of CRUD.
   client.query(
     `UPDATE articles
     SET
@@ -100,7 +101,7 @@ app.put('/articles/:id', (request, response) => {
 
 app.delete('/articles/:id', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // This corresponds to 2, 3, 5 of the full-stack-diagram. This interacts with .deleteRecord in article.js. It is the delete part of CRUD.
+  // This corresponds to 3 of the full-stack-diagram. This interacts with .deleteRecord in article.js. It is the delete part of CRUD.
   client.query(
     `DELETE FROM articles WHERE article_id=$1;`,
     [request.params.id]
@@ -115,7 +116,7 @@ app.delete('/articles/:id', (request, response) => {
 
 app.delete('/articles', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // This corresponds to steps 2, 3, and 5 of full-stack-diagram. This interacts with .truncateTable in article.js. This is the delete part of CRUD.
+  // This corresponds to step 3 of full-stack-diagram. This interacts with .truncateTable in article.js. This is the delete part of CRUD.
   client.query(
     'DELETE FROM articles;'
   )
@@ -143,7 +144,7 @@ function loadArticles() {
   // This correspnds to steps 3 and 4. This interacts with the .loadAll method in article.js.  This is the create part of CRUD.
   client.query('SELECT COUNT(*) FROM articles')
     .then(result => {
-    // REVIEW: result.rows is an array of objects that PostgreSQL returns as a response to a query.
+    // REVIEWED: result.rows is an array of objects that PostgreSQL returns as a response to a query.
     // If there is nothing on the table, then result.rows[0] will be undefined, which will make count undefined. parseInt(undefined) returns NaN. !NaN evaluates to true.
     // Therefore, if there is nothing on the table, line 158 will evaluate to true and enter into the code block.
       if(!parseInt(result.rows[0].count)) {
