@@ -5,6 +5,13 @@ function Article (rawDataObj) {
   We can also set properties on objects with bracket notation instead of dot notation, which we must do when we don't necessarily know what the property name will be and thus set it as a variable.
   Additionally, what "this" is changes depending on your context - inside a constructor function, like Article, "this" refers to the newly instantiated object. However, inside the anonymous function we're passing into forEach as an argument, "this" in 'use strict' mode will be undefined. As a result, we can pass our instantiated object "this" into forEach as a second argument to preserve context.
   There is a LOT of new behavior going on here! Review object bracket notation and Object.keys to try and grok what's going on here.*/
+  // Note to self - find out difference:
+  // function Neighborhood (rawDataObject) {
+  //   for (let key in rawDataObject) {
+  //     this[key] = rawDataObject[key];
+  //   }
+  // };
+
   Object.keys(rawDataObj).forEach(key => {
     this[key] = rawDataObj[key];
   }, this);
